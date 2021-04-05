@@ -1,26 +1,29 @@
 class Category():
-    def __init__(self, category, funds):
+    """defines the type of expense being tracked"""
+    def __init__(self, category):
         self.category = category
-        self._funds = _funds
-        self._alive = True
-        # do i need to identify the categories here? or where?
+        self.ledger = []
+        self.amount = 0
 
-    ledger = []
-
-    def deposit(self, amount):
-      remaining_balance = self._funds - amount
-      if remaining_balance >= 0:
-          self._funds = remaining_balance
-          print("I spent {} and have {} left".format(amount, self.funds))
-      else:
-          print("You do not have sufficient funds")
-          self._solvent = False
+        
+    def deposit(self, amount_added, decription = ''):
+        if not description:
+            description = ''
+        self.ledger.append({'amount' : amount_added, 'description' : description})
+        self.amount += amount_added
+        return True
 
       # note "amount": amount, "description": description od what has been spent, add to ledger list
 
-    def withdraw(self, amount, description):
-      # as above but negative number
-        pass
+    def withdraw(self, amount_spent, description = ''):
+        if not self.check_funds(amount_spent):
+            return False
+        if not description:
+            descrition = ''
+        self.ledge.append({'amount' : (amount_spent * -1), 'description' : description})
+        self.amount -= amount_spent
+        return True
+
 
     def get_balance(self):
       # this needs to go through and identify categories and add/ subtract amounts in each
@@ -34,20 +37,11 @@ class Category():
       # this is used by both withdraw and transfer - checking there's enough money
         pass
 
-class Food(Category):
 
-  def __init__(self, amount):
-        super().__init__(amount=amount)
-  pass
-
-class Clothing(Category):
-    def __init__(self, amount):
-        super().__init__(amount=amount)
-    pass
 
   # et cetera  #
 
 
 
 def create_spend_chart(categories):
-  # this needs a list of all catoegories, and ... a string creating a bar chart. No idea at the moment how to do that! 
+  # this needs a list of all catoegories, and ... a string creating a bar chart. No idea at the moment how to do that!
