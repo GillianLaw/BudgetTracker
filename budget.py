@@ -16,6 +16,8 @@ class Category():
             description = ''
         self.ledger.append({'amount' : amount_added, 'description' : description})
         self.amount += amount_added
+        # testing this out
+        # self.spent -= amount_added
         return self
 
       # note "amount": amount, "description": description od what has been spent, add to ledger lis
@@ -34,6 +36,8 @@ class Category():
             description = ''
         self.ledger.append({'amount' : (amount_spent * -1), 'description' : description})
         self.amount -= amount_spent
+        # testing this out
+        self.spent += amount_spent
         return True
 
 
@@ -76,7 +80,7 @@ def create_spend_chart(cat_list):
 
 
     for x in cat_list:
-        value = x.amount
+        value += x.spent
         # value should really be total of ALL cats. or should it?
 
     answer = "Percentage spent by category" + '\n'
@@ -86,11 +90,11 @@ def create_spend_chart(cat_list):
 
         for z in cat_list:
             # value2 = 0
-            if z.amount != 0:
+            if z.spent != 0:
                 # this is where my problem lies - eveything is showing up as 0
                 # Switched to using x.amount, now get 100% for two cats, none for one!
-                value2=int(math.floor(((z.amount/value)*100)/ 10.0)) * 10
-
+                value2=int(math.floor(((z.spent/value)*100)/ 10.0)) * 10
+                # value2=z.spent // value
 
             if value2 >= 1:
                 answer += "o  "
