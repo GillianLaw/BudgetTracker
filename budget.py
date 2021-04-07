@@ -1,4 +1,5 @@
 import math
+from itertools import zip_longest
 
 class Category():
     """defines the type of expense being tracked"""
@@ -64,45 +65,93 @@ def split_word(str):
   return [char for char in str]
 
 
-def create_spend_chart(arg):
-    print("Percentage spent by category")
-    num = len(arg)
-    totalSpent = 0
-    wordList = []
-    for item in range(num):
-        wordList.append(list(arg[item].category))
-        totalSpent += arg[item].spent
+def create_spend_chart(cat_list):
+    answer = ""
+    text = ""
+    value = 0
 
-    pctList = []
-    for item in range(num):
-        if totalSpent >= 1:
-            pctList.append(math.floor(arg[item].spent/totalSpent * 10))
-            ht = 10
-            while ht >= 0:
-                print(f"{(ht*10):3d}| ", end = "")
-                for p in range(num):
-                    if pctList[p-1] >= ht:
-                        print("o  ",end ="")
-                    else:
-                        print("",end="   ")
-                print()
-                ht -= 1
-            print(" "*4+"-"*(num*3+1))#bottom axis
+    for x in cat_list:
+        value += x.spent
 
-        l= len(max(wordList, key=len))
-        x=0
-        while x < l:
-            print("     ",end="")
-            i=0
-            while i < num:
-                try:
-                    print(wordList[i][x],end = "  ")
-                except IndexError:
-                    print("   ", end="")
-                i+=1
-            print("")
-            x+=1
-        return
+    answer = "Percentage spent by category" + '\n'
+    i = 100
+    while i >= 0:
+        answer += (str(i) + "| ").rjust(5)
+
+        for x in cat_list:
+            value2 = 0
+            if x.spent != 0:
+                # value2 = int(math.floor(((x.spent/value) * 100)/ 10.0)) * 10
+                value2=int(math.floor(((x.spent/value)*100)/ 10.0)) * 10
+            if value2 >= 1:
+                answer += "o  "
+            else:
+                answer += "   "
+
+        i = i - 10
+        answer += '\n'
+
+    shifted = 3 * (len(cat_list) + 1) + 2
+    # answer += ("-" * (3 * (len(cat_list)) + 1).r.just(shifted) + '\n'
+    answer+=("-"*(3*(len(cat_list))+1)).rjust(shifted)+'\n'
+
+
+    for z in cat_list:
+        text += z.category + ' '
+    for p in zip_longest(* text.split(), fillvalue=' '):
+        # not sure of above
+        answer += " " * 5 + '  '.join(p)+'  '+ '\n'
+
+    return answer[:-1]
+
+
+
+
+
+
+
+
+
+
+# def create_spend_chart(arg):
+#     print("Percentage spent by category")
+#     num = len(arg)
+#     totalSpent = 0
+#     wordList = []
+#     for item in range(num):
+#         wordList.append(list(arg[item].category))
+#         totalSpent += arg[item].spent
+#
+#     pctList = []
+#     for item in range(num):
+#         if totalSpent >= 1:
+#             pctList.append(math.floor(arg[item].spent/totalSpent * 10))
+#             ht = 10
+#             while ht >= 0:
+#                 print(f"{(ht*10):3d}| ", end = "")
+#                 for p in range(num):
+#                     if pctList[p-1] >= ht:
+#                         print("o  ",end ="")
+#                     else:
+#                         print("",end="   ")
+#                 print()
+#                 ht -= 1
+#             print(" "*4+"-"*(num*3+1))#bottom axis
+#
+#         l= len(max(wordList, key=len))
+#         x=0
+#         while x < l:
+#             print("     ",end="")
+#             i=0
+#             while i < num:
+#                 try:
+#                     print(wordList[i][x],end = "  ")
+#                 except IndexError:
+#                     print("   ", end="")
+#                 i+=1
+#             print("")
+#             x+=1
+#         return
 
 
 
